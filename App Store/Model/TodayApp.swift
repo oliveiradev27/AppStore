@@ -15,4 +15,5 @@ struct TodayApp {
     let imagemUrl: String?
     let descricao: String?
     let backgroundColor: String?
+    let apps: [App]?
 }

@@ -12,9 +12,12 @@ class TodayDetailsViewController: UIViewController {
 
     var todayApp: TodayApp? {
         didSet {
-            
-            if todayApp != nil {
-                self.addSingle()
+            if let todayApp = todayApp {
+                if (todayApp.apps == nil) {
+                    self.addSingle()
+                } else {
+                    self.addMultiplesApps()
+                }
             }
             
         }
@@ -31,6 +34,7 @@ class TodayDetailsViewController: UIViewController {
     var heightConstraint: NSLayoutConstraint?
     
     let todayDetailUniqueViewController = TodayDetailsUniqueViewController()
+    let todayDetailsMultiplesViewController = TodayDetailsMultiplesViewController()
     
     var handlerClose: (() -> ())?
     
@@ -62,6 +66,11 @@ class TodayDetailsViewController: UIViewController {
         todayDetailUniqueViewController.todayApp = self.todayApp
         self.centerView = todayDetailUniqueViewController.view
         self.showAnimation()
+    }
+    
+    func addMultiplesApps() {
+        self.centerView = todayDetailsMultiplesViewController.view
+        showAnimation()
     }
     
     func showAnimation() {
