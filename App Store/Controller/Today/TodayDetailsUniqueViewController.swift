@@ -10,6 +10,8 @@ import UIKit
 
 class TodayDetailsUniqueViewController: UITableViewController {
    
+    var todayApp: TodayApp?
+    
     let cellId = "cellId"
     
     override func viewDidLoad() {
@@ -18,6 +20,7 @@ class TodayDetailsUniqueViewController: UITableViewController {
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
+        tableView.contentInsetAdjustmentBehavior = .never
         tableView.register(TodayDetailUniqueCell.self, forCellReuseIdentifier: cellId)
         self.addHeader()
     }
@@ -26,6 +29,7 @@ class TodayDetailsUniqueViewController: UITableViewController {
         let headerView = UIView(frame: .init(x: 0, y: 0, width: view.bounds.width, height: view.bounds.width + 48))
 
         let todayCell = TodayCell()
+        todayCell.todayApp = self.todayApp
         todayCell.layer.cornerRadius = 0
         headerView.addSubview(todayCell)
         todayCell.preencherSuperView()

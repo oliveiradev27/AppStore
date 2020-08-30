@@ -10,6 +10,16 @@ import UIKit
 
 class TodayDetailsViewController: UIViewController {
 
+    var todayApp: TodayApp? {
+        didSet {
+            
+            if todayApp != nil {
+                self.addSingle()
+            }
+            
+        }
+    }
+    
     let buttonClose: UIButton = UIButton.buildCloseButton()
     
     var centerView: UIView?
@@ -49,6 +59,7 @@ class TodayDetailsViewController: UIViewController {
     }
     
     func addSingle() {
+        todayDetailUniqueViewController.todayApp = self.todayApp
         self.centerView = todayDetailUniqueViewController.view
         self.showAnimation()
     }

@@ -11,6 +11,7 @@ import UIKit
 class TodayViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     let cellId = "cellId"
+    var todayApps: [TodayApp] = []
     
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -27,17 +28,33 @@ class TodayViewController: UICollectionViewController, UICollectionViewDelegateF
         
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.register(TodayCell.self, forCellWithReuseIdentifier: cellId)
+        
+        self.searchTodayHighlights()
+    }
+    
+    func searchTodayHighlights() {
+        TodayService.shared.searchTodayHighlights { (apps, err) in
+            if let apps = apps {
+                DispatchQueue.main.async {
+                    self.todayApps = apps
+                    self.collectionView.reloadData()
+                }
+            }
+        }
     }
 }
 
 extension TodayViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return self.todayApps.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TodayCell
+        
+        cell.todayApp = self.todayApps[indexPath.item]
+        
         return cell
     }
     
@@ -62,7 +79,8 @@ extension TodayViewController {
                 
                 self.present(modalView, animated: false) {
                     modalView.frame = frame
-                    modalView.addSingle()
+                    modalView.todayApp = self.todayApps[indexPath.item]
+                    
                 }
             }
         }
