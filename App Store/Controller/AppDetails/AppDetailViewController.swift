@@ -87,11 +87,12 @@ class AppDetailViewController: UICollectionViewController, UICollectionViewDeleg
         
         if indexPath.item == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: screenshotId, for: indexPath) as! AppDetailScreenshotCell
+            cell.app = self.app
             return cell
         }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: evaluationId, for: indexPath) as! AppDetailEvaluationCell
-        
+        cell.app = self.app
         return cell
     }
     

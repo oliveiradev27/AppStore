@@ -13,6 +13,14 @@ class AppDetailScreenshotCell: UICollectionViewCell,UICollectionViewDelegate, UI
     let titleLabel: UILabel = .textBoldLabel(text: "Pré-visualizar", fontSize: 24)
     var collectionView: UICollectionView!
     
+    var app: App? {
+        didSet {
+            if app != nil {
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     let cellId = "cellId"
     
     override init(frame: CGRect) {
@@ -49,11 +57,16 @@ class AppDetailScreenshotCell: UICollectionViewCell,UICollectionViewDelegate, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return self.app?.screenshotUrls?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ScreenshotCell
+        
+        if let imageUrl = self.app?.screenshotUrls?[indexPath.item] {
+            cell.imageView.sd_setImage(with: URL(string: imageUrl), completed: nil)
+        }
+        
         return cell
     }
 
