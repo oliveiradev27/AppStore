@@ -40,8 +40,15 @@ class TodayDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .clear
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
     }
     
     func addbuttonClose() {
@@ -69,6 +76,14 @@ class TodayDetailsViewController: UIViewController {
     }
     
     func addMultiplesApps() {
+        self.todayDetailsMultiplesViewController.todayApp = self.todayApp
+        self.todayDetailsMultiplesViewController.handlerClick = { app in
+            let detailsViewController = AppDetailViewController()
+            detailsViewController.title = app.nome
+            detailsViewController.app = app
+            
+            self.navigationController?.pushViewController(detailsViewController, animated: true)
+        }
         self.centerView = todayDetailsMultiplesViewController.view
         showAnimation()
     }
@@ -95,7 +110,7 @@ class TodayDetailsViewController: UIViewController {
         
         view.layoutIfNeeded()
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .overrideInheritedCurve, animations: {
+        UIView.animate(withDuration: 0.6, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7,options: .overrideInheritedCurve, animations: {
             self.topConstraint?.constant = 0
             self.leadingConstraint?.constant = 0
             self.widthConstraint?.constant = self.view.frame.width
@@ -114,7 +129,12 @@ class TodayDetailsViewController: UIViewController {
     }
     
     func animateClose() {
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .overrideInheritedCurve, animations: {
+        
+        self.todayDetailsMultiplesViewController.tableView.setContentOffset(CGPoint(x: 0, y: -self.todayDetailsMultiplesViewController.tableView.safeAreaInsets.top), animated: false)
+        
+        self.todayDetailsMultiplesViewController.tableView.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.7, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7 , options: .overrideInheritedCurve, animations: {
             
             if let frame = self.frame {
                 self.topConstraint?.constant = frame.origin.y
@@ -123,6 +143,7 @@ class TodayDetailsViewController: UIViewController {
                 self.heightConstraint?.constant = frame.height
                 
                 self.centerView?.layer.cornerRadius = 16
+                self.todayDetailUniqueViewController.tableView.contentOffset = .zero
                 self.view.layoutIfNeeded()
             }
             
